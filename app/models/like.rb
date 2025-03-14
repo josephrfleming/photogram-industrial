@@ -3,22 +3,15 @@
 # Table name: likes
 #
 #  id         :bigint           not null, primary key
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
 #  fan_id     :bigint           not null
 #  photo_id   :bigint           not null
-#
-# Indexes
-#
-#  index_likes_on_fan_id    (fan_id)
-#  index_likes_on_photo_id  (photo_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (fan_id => users.id)
-#  fk_rails_...  (photo_id => photos.id)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 class Like < ApplicationRecord
-  belongs_to :fan, class_name: "User"
-  belongs_to :photo
+  # When a Like is created/destroyed, update users.likes_count
+  belongs_to :fan, class_name: "User", counter_cache: true
+
+  # Also update photos.likes_count
+  belongs_to :photo, counter_cache: true
 end

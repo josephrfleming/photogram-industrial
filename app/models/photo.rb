@@ -3,25 +3,19 @@
 # Table name: photos
 #
 #  id             :bigint           not null, primary key
-#  caption        :text
-#  comments_count :integer          default(0)
 #  image          :string
+#  caption        :text
 #  likes_count    :integer          default(0)
+#  comments_count :integer          default(0)
+#  owner_id       :bigint           not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  owner_id       :bigint           not null
 #
-# Indexes
-#
-#  index_photos_on_owner_id  (owner_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (owner_id => users.id)
-#
-# app/models/photo.rb
-
 class Photo < ApplicationRecord
-  belongs_to :owner, class_name: "User"
-  has_many :comments
+  # Bumps the users.photos_count if you have a column for that (owner's photos_count).
+  # Only do this if you actually have a "photos_count" column on users!
+  belongs_to :owner, class_name: "User", counter_cache: true
+
+  has_many :comments, dependent: :destroy
+  has_many :likes, dependent: :destroy
 end

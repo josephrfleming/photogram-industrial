@@ -1,10 +1,32 @@
+# == Schema Information
+#
+# Table name: photos
+#
+#  id             :bigint           not null, primary key
+#  caption        :text
+#  comments_count :integer          default(0)
+#  image          :string
+#  likes_count    :integer          default(0)
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  owner_id       :bigint           not null
+#
+# Indexes
+#
+#  index_photos_on_owner_id  (owner_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (owner_id => users.id)
+#
+# app/models/photo.rb
+
 class Photo < ApplicationRecord
-  # The owner is a User (with a custom foreign key and counter cache)
   belongs_to :owner, class_name: "User", counter_cache: true
-
-  # A photo can have many comments
   has_many :comments, dependent: :destroy
-
-  # A photo can have many likes
   has_many :likes, dependent: :destroy
+  has_many :fans, through: :likes
+
+  validates :caption, presence: true
+  validates :image, presence: true
 end

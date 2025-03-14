@@ -14,6 +14,14 @@
   </head>
 
   <body>
+    <!-- (Optional) Flash messages go here -->
+    <% if notice %>
+      <div class="alert alert-success"><%= notice %></div>
+    <% end %>
+    <% if alert %>
+      <div class="alert alert-danger"><%= alert %></div>
+    <% end %>
+
     <!-- Render the navbar partial -->
     <%= render partial: "shared/navbar" %>
 

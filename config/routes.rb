@@ -1,14 +1,13 @@
 Rails.application.routes.draw do
-  resources :likes
-  resources :follow_requests
-  resources :comments
-  resources :photos
-  devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
-
+  # Root route is set first
   root "photos#index"
 
+  # Devise routes
+  devise_for :users
+
+  # Resource routes (alphabetically ordered)
+  resources :comments
+  resources :follow_requests
+  resources :likes
+  resources :photos
 end

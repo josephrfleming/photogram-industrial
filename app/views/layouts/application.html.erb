@@ -5,12 +5,21 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+    
+    <!-- Render the partial that includes CDN assets for Bootstrap and Font Awesome -->
+    <%= render partial: "shared/cdn_assets" %>
+    
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <%= yield %>
+    <!-- Render the navbar partial -->
+    <%= render partial: "shared/navbar" %>
+
+    <!-- Wrap yield in a container for consistent padding/margins -->
+    <div class="container">
+      <%= yield %>
+    </div>
   </body>
 </html>

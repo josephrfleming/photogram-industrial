@@ -1,9 +1,10 @@
 # lib/tasks/dev.rake
 
+desc "Fill the database tables with some sample data"
 task sample_data: :environment do
   p "Creating sample data..."
+  starting = Time.now
 
-  # Only run in development!
   if Rails.env.development?
     FollowRequest.destroy_all
     Comment.destroy_all
@@ -18,6 +19,7 @@ task sample_data: :environment do
     User.create!(
       email: "#{name}@example.com",
       password: "password",
+      password_confirmation: "password",
       username: name,
       private: [true, false].sample
     )
@@ -38,7 +40,7 @@ task sample_data: :environment do
           status: FollowRequest.statuses.keys.sample
         )
       end
-      # And also with 75% chance, create one in the reverse direction
+      # And with 75% chance, create one in the reverse direction
       if rand < 0.75
         second_user.sent_follow_requests.create!(
           recipient: first_user,
@@ -60,12 +62,12 @@ task sample_data: :environment do
 
       # For each follower of the user, decide if they like or comment on the photo
       user.followers.each do |follower|
-        # With 50% chance, add a like, but only if they haven't liked it already.
+        # With 50% chance, add a like (only if they haven't liked it already)
         if rand < 0.5 && !photo.fans.include?(follower)
           photo.likes.create!(fan: follower)
         end
 
-        # With 25% chance, add a comment by the follower on this photo.
+        # With 25% chance, add a comment by the follower on this photo
         if rand < 0.25
           photo.comments.create!(
             body: Faker::Quote.jack_handey,
@@ -79,4 +81,6 @@ task sample_data: :environment do
   p "There are now #{Photo.count} photos."
   p "There are now #{Like.count} likes."
   p "There are now #{Comment.count} comments."
+
+  p "Sample data created in #{Time.now - starting} seconds."
 end

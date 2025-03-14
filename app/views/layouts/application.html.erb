@@ -6,7 +6,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     
-    <!-- Render the partial that includes CDN assets for Bootstrap and Font Awesome -->
+    <!-- Render CDN assets for Bootstrap and Font Awesome -->
     <%= render partial: "shared/cdn_assets" %>
     
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
@@ -14,19 +14,17 @@
   </head>
 
   <body>
-    <!-- (Optional) Flash messages go here -->
-    <% if notice %>
-      <div class="alert alert-success"><%= notice %></div>
-    <% end %>
-    <% if alert %>
-      <div class="alert alert-danger"><%= alert %></div>
-    <% end %>
-
-    <!-- Render the navbar partial -->
     <%= render partial: "shared/navbar" %>
 
-    <!-- Wrap yield in a container for consistent padding/margins -->
     <div class="container">
+      <% if notice.present? %>
+        <%= render partial: "shared/flash", locals: { message: notice, css_class: "success" } %>
+      <% end %>
+      
+      <% if alert.present? %>
+        <%= render partial: "shared/flash", locals: { message: alert, css_class: "danger" } %>
+      <% end %>
+
       <%= yield %>
     </div>
   </body>

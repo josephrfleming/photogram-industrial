@@ -1,8 +1,8 @@
 <!-- app/views/shared/_navbar.html.erb -->
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
   <div class="container">
-    <!-- Replace static <a> with link_to for the homepage -->
+    <!-- Homepage link using Rails helper -->
     <%= link_to "Photogram", root_path, class: "navbar-brand" %>
 
     <!-- Navbar toggler for responsive design -->
@@ -12,8 +12,8 @@
     </button>
   
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- Left side: Resources dropdown -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <!-- Dropdown menu for resources -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Resources
@@ -27,15 +27,21 @@
         </li>
       </ul>
       
-      <!-- Place sign in/out links here if needed (e.g., using Devise helpers) -->
+      <!-- Right side: Account links (conditionally displayed) -->
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= link_to "Edit #{current_user.username}", edit_user_registration_path, class: "nav-link" %>
+          </li>
           <li class="nav-item">
             <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "nav-link" %>
           </li>
         <% else %>
           <li class="nav-item">
             <%= link_to "Sign In", new_user_session_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Sign Up", new_user_registration_path, class: "nav-link" %>
           </li>
         <% end %>
       </ul>

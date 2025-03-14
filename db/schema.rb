@@ -10,9 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_14_032943) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_14_041326) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "comments", force: :cascade do |t|
+    t.bigint "author_id", null: false
+    t.bigint "photo_id", null: false
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["photo_id"], name: "index_comments_on_photo_id"
+  end
+
+  create_table "follow_requests", force: :cascade do |t|
+    t.bigint "recipient_id", null: false
+    t.bigint "sender_id", null: false
+    t.string "status", default: "pending"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipient_id"], name: "index_follow_requests_on_recipient_id"
+    t.index ["sender_id"], name: "index_follow_requests_on_sender_id"
+  end
 
   create_table "photos", force: :cascade do |t|
     t.string "image"
@@ -41,5 +60,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_14_032943) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "comments", "photos"
+  add_foreign_key "comments", "users", column: "author_id"
+  add_foreign_key "follow_requests", "users", column: "recipient_id"
+  add_foreign_key "follow_requests", "users", column: "sender_id"
   add_foreign_key "photos", "users", column: "owner_id"
 end

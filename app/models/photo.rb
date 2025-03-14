@@ -19,6 +19,9 @@
 #
 #  fk_rails_...  (owner_id => users.id)
 #
+# app/models/photo.rb
+
 class Photo < ApplicationRecord
   belongs_to :owner, class_name: "User"
+  has_many :comments
 end

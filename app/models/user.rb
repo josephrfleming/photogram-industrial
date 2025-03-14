@@ -1,40 +1,18 @@
-# == Schema Information
-#
-# Table name: users
-#
-#  id                     :bigint           not null, primary key
-#  comments_count         :integer
-#  email                  :string           default(""), not null
-#  encrypted_password     :string           default(""), not null
-#  likes_count            :integer
-#  private                :boolean
-#  remember_created_at    :datetime
-#  reset_password_sent_at :datetime
-#  reset_password_token   :string
-#  username               :string
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#
-# Indexes
-#
-#  index_users_on_email                 (email) UNIQUE
-#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
-#
 class User < ApplicationRecord
-  # Devise modules, etc.
+  # Devise modules and other configurations…
 
-  # Photos, comments, etc.
-  has_many :own_photos, class_name: "Photo", foreign_key: "owner_id"
+  # A user creates many comments (using author_id, not user_id)
+  has_many :comments, foreign_key: :author_id, dependent: :destroy
 
-  # Follow requests this user SENT
-  has_many :sent_follow_requests, 
-           class_name: "FollowRequest", 
-           foreign_key: "sender_id", 
-           dependent: :destroy
+  # Follow requests this user SENT (as sender)
+  has_many :sent_follow_requests, foreign_key: :sender_id, class_name: "FollowRequest", dependent: :destroy
 
-  # Follow requests this user RECEIVED
-  has_many :received_follow_requests, 
-           class_name: "FollowRequest", 
-           foreign_key: "recipient_id", 
-           dependent: :destroy
+  # Follow requests this user RECEIVED (as recipient)
+  has_many :received_follow_requests, foreign_key: :recipient_id, class_name: "FollowRequest", dependent: :destroy
+
+  # A user (as a fan) can like many photos
+  has_many :likes, foreign_key: :fan_id, dependent: :destroy
+
+  # Photos owned by this user (note the custom method name)
+  has_many :own_photos, foreign_key: :owner_id, class_name: "Photo", dependent: :destroy
 end

@@ -1,21 +1,10 @@
-# == Schema Information
-#
-# Table name: photos
-#
-#  id             :bigint           not null, primary key
-#  image          :string
-#  caption        :text
-#  likes_count    :integer          default(0)
-#  comments_count :integer          default(0)
-#  owner_id       :bigint           not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#
 class Photo < ApplicationRecord
-  # Bumps the users.photos_count if you have a column for that (owner's photos_count).
-  # Only do this if you actually have a "photos_count" column on users!
+  # The owner is a User (with a custom foreign key and counter cache)
   belongs_to :owner, class_name: "User", counter_cache: true
 
+  # A photo can have many comments
   has_many :comments, dependent: :destroy
+
+  # A photo can have many likes
   has_many :likes, dependent: :destroy
 end

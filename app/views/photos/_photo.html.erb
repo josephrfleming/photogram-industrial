@@ -1,27 +1,23 @@
-<div id="<%= dom_id photo %>">
-  <p>
-    <strong>Image:</strong>
-    <%= photo.image %>
-  </p>
+<!-- app/views/photos/_photo.html.erb -->
 
-  <p>
-    <strong>Comments count:</strong>
-    <%= photo.comments_count %>
-  </p>
-
-  <p>
-    <strong>Likes count:</strong>
-    <%= photo.likes_count %>
-  </p>
-
-  <p>
-    <strong>Caption:</strong>
-    <%= photo.caption %>
-  </p>
-
-  <p>
-    <strong>Owner:</strong>
-    <%= photo.owner_id %>
-  </p>
-
+<div class="row mb-4" id="<%= dom_id(photo) %>">
+  <div class="col-md-6 offset-md-3">
+    <div class="card">
+      <%= image_tag photo.image, class: "card-img-top" %>
+      <div class="card-body">
+        <h5 class="card-title"><%= photo.owner.username %></h5>
+        <p class="card-text"><%= photo.caption %></p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <% photo.comments.each do |comment| %>
+          <li class="list-group-item">
+            <%= comment.body %>
+          </li>
+        <% end %>
+      </ul>
+      <div class="card-body">
+        <%= link_to "Show this photo", photo, class: "card-link" %>
+      </div>
+    </div>
+  </div>
 </div>

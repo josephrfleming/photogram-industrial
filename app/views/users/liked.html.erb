@@ -1,0 +1,30 @@
+<!-- app/views/users/liked.html.erb -->
+
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <h1><%= @user.username %></h1>
+    <ul class="nav nav-pills nav-justified">
+      <li class="nav-item">
+        <%= link_to "Posts", user_path(@user.username), class: "nav-link" %>
+      </li>
+      <li class="nav-item">
+        <!-- Mark "Liked photos" as active on this page -->
+        <%= link_to "Liked photos", liked_path(@user.username), class: "nav-link active" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Feed", feed_path(@user.username), class: "nav-link" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Followers", followers_path(@user.username), class: "nav-link" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Following", following_path(@user.username), class: "nav-link" %>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- Render the user's liked photos using the photo partial -->
+<% @user.liked_photos.each do |photo| %>
+  <%= render "photos/photo", photo: photo %>
+<% end %>

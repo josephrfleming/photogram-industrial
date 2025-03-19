@@ -1,0 +1,51 @@
+<!-- app/views/users/show.html.erb -->
+
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <h1><%= @user.username %></h1>
+    <ul class="nav nav-pills nav-justified">
+      <li class="nav-item">
+        <%= link_to "Posts", user_path(@user.username), class: "nav-link active" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Liked photos", liked_path(@user.username), class: "nav-link" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Feed", feed_path(@user.username), class: "nav-link" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Followers", followers_path(@user.username), class: "nav-link" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Following", following_path(@user.username), class: "nav-link" %>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="mt-4">Own photos</h2>
+
+<% @user.own_photos.each do |photo| %>
+  <div class="row mb-4">
+    <div class="col-md-6 offset-md-3">
+      <div class="card">
+        <%= image_tag photo.image, class: "card-img-top" %>
+        <div class="card-body">
+          <h5 class="card-title"><%= photo.owner.username %></h5>
+          <p class="card-text"><%= photo.caption %></p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <% photo.comments.each do |comment| %>
+            <li class="list-group-item">
+              <%= comment.body %>
+            </li>
+          <% end %>
+        </ul>
+        <div class="card-body">
+          <!-- Render the comment form, passing a new comment with photo_id set -->
+          <%= render "comments/form", comment: Comment.new(photo_id: photo.id) %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

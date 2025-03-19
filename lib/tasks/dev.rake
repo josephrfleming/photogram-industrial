@@ -13,14 +13,21 @@ task sample_data: :environment do
     User.destroy_all
   end
 
-  # Create 12 sample users
-  12.times do
-    name = Faker::Name.first_name.downcase
+  # Create an array of usernames with known values included
+  usernames = []
+  usernames << "alice"
+  usernames << "bob"
+  # Add additional random usernames so total users equals 12
+  (12 - 2).times do
+    usernames << Faker::Name.first_name.downcase
+  end
+
+  usernames.each do |username|
     User.create!(
-      email: "#{name}@example.com",
+      email: "#{username}@example.com",
       password: "password",
       password_confirmation: "password",
-      username: name,
+      username: username,
       private: [true, false].sample
     )
   end

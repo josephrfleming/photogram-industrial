@@ -21,8 +21,8 @@
           <% end %>
         </ul>
         <div class="card-body">
-          <a href="#" class="card-link">Card link</a>
-          <a href="#" class="card-link">Another link</a>
+          <!-- Render the comment form, passing a new comment with photo_id set -->
+          <%= render "comments/form", comment: Comment.new(photo_id: photo.id) %>
         </div>
       </div>
     </div>

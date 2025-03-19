@@ -1,13 +1,13 @@
 Rails.application.routes.draw do
-  # Root route is set first
   root "photos#index"
 
-  # Devise routes
   devise_for :users
-
-  # Resource routes (alphabetically ordered)
+  
   resources :comments
   resources :follow_requests
   resources :likes
   resources :photos
+
+  # This route maps a URL like "/alice" to the users#show action.
+  get "/:username" => "users#show", as: :user
 end
